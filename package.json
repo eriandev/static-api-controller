@@ -1,0 +1,33 @@
+{
+  "name": "static-api-controller",
+  "version": "0.5.0",
+  "description": "CLI that will obtain the necessary data using webscraping or consuming other APIs, process it and send the information to the api repository",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "dev": "tsc-watch --onSuccess \"node dist/main.js\"",
+    "build": "tsc"
+  },
+  "keywords": [
+      "cli",
+      "webscraping",
+      "puppeteer",
+      "typescript",
+      "nodejs"
+  ],
+  "author": "erianvc",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "inquirer": "^7.1.0",
+    "puppeteer-core": "^3.3.0",
+    "shelljs": "^0.8.4"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^6.5.0",
+    "@types/puppeteer-core": "^2.0.0",
+    "@types/shelljs": "^0.8.8",
+    "tsc-watch": "^4.2.8",
+    "typescript": "^3.9.3"
+  }
+}

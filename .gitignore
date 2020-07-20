@@ -1,0 +1,7 @@
+/node_modules/
+/dist/
+
+local_paths.ts
+
+.vscode
+.DS_Store
