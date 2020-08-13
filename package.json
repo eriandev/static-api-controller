@@ -9,25 +9,25 @@
     "build": "tsc"
   },
   "keywords": [
-      "cli",
-      "webscraping",
-      "puppeteer",
-      "typescript",
-      "nodejs"
+    "cli",
+    "webscraping",
+    "puppeteer",
+    "typescript",
+    "nodejs"
   ],
   "author": "erianvc",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
-    "inquirer": "^7.1.0",
-    "puppeteer-core": "^3.3.0",
+    "inquirer": "^7.3.3",
+    "puppeteer-core": "^5.2.1",
     "shelljs": "^0.8.4"
   },
   "devDependencies": {
-    "@types/inquirer": "^6.5.0",
+    "@types/inquirer": "^7.3.0",
     "@types/puppeteer-core": "^2.0.0",
     "@types/shelljs": "^0.8.8",
-    "tsc-watch": "^4.2.8",
-    "typescript": "^3.9.3"
+    "tsc-watch": "^4.2.9",
+    "typescript": "^3.9.7"
   }
 }
