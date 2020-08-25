@@ -18,7 +18,7 @@
   "author": "erianvc",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "inquirer": "^7.3.3",
     "puppeteer-core": "^5.2.1",
     "shelljs": "^0.8.4"
