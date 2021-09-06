@@ -1,33 +1,22 @@
-import inquirer from 'inquirer'
-import project1 from './COVID-Peru'
+import { prompt, ListQuestionOptions } from 'inquirer';
+import { MODULES_PATH } from './shared/constants';
+import { getDirectoriesNames } from './shared/files';
 
-const projects = ['COVID-Peru', 'Salir'];
+const modules = getDirectoriesNames(MODULES_PATH);
 
+(async (): Promise<void> => {
+  const questions: ListQuestionOptions = {
+    type: 'list',
+    name: 'chosenModule',
+    message: 'Módulo a usar:',
+    choices: modules,
+  };
 
+  const answers = await prompt([questions]);
 
-(async () => {
+  const { default: chosenModule } = await import(
+    `./modules/${answers.chosenModule}`
+  );
 
-    console.clear()
-
-    const ans = await inquirer.prompt({
-        type: 'list',
-        name: 'chooseProject',
-        message: '¿Con qué proyecto trabajar?',
-        choices: projects
-    })
-
-    switch (ans['chooseProject']) {
-
-        case projects[0]:
-            console.log('Ingresando a COVID-Peru');
-            project1();
-            break;
-
-        case projects[1]:
-            console.log('Sesión terminada');
-            break;
-    
-        default:
-            break;
-    }
+  chosenModule();
 })();
