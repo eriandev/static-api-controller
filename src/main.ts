@@ -1,6 +1,6 @@
 import { prompt, ListQuestionOptions } from 'inquirer';
 import { MODULES_PATH } from './shared/constants';
-import { getDirectoriesNames } from './shared/files';
+import { getDirectoriesNames } from './shared/file';
 
 const modules = getDirectoriesNames(MODULES_PATH);
 
@@ -8,15 +8,13 @@ const modules = getDirectoriesNames(MODULES_PATH);
   const questions: ListQuestionOptions = {
     type: 'list',
     name: 'chosenModule',
-    message: 'Módulo a usar:',
+    message: 'Module to use:',
     choices: modules,
   };
 
   const answers = await prompt([questions]);
 
-  const { default: chosenModule } = await import(
-    `./modules/${answers.chosenModule}`
-  );
+  const { default: chosenModule } = await import(`./modules/${answers.chosenModule}`);
 
   chosenModule();
 })();
