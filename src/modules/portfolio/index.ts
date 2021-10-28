@@ -1,8 +1,9 @@
 import { prompt, ListQuestionOptions } from 'inquirer';
 import updateReposList from './updateReposList';
+import updateFeaturedList from './updateFeaturedList';
 
 const MODULE_NAME = 'portfolio';
-const OPTIONS_TEXT = ['Update repository list', 'Exit'];
+const OPTIONS_TEXT = ['Update repository list', 'Update featured list', 'Exit'];
 
 async function showOptions(): Promise<void> {
   const questions: ListQuestionOptions = {
@@ -18,6 +19,11 @@ async function showOptions(): Promise<void> {
     case OPTIONS_TEXT[0]:
       console.log(OPTIONS_TEXT[0]);
       updateReposList(MODULE_NAME, 'erianvc');
+      break;
+
+    case OPTIONS_TEXT[1]:
+      console.log(OPTIONS_TEXT[1]);
+      updateFeaturedList(MODULE_NAME, 'erianvc');
       break;
 
     case OPTIONS_TEXT[2]:

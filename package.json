@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@octokit/rest": "^18.12.0",
+    "playwright": "^1.16.2",
     "shelljs": "^0.8.4"
   },
   "devDependencies": {
