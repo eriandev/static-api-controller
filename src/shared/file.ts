@@ -17,7 +17,7 @@ export function writeJSON(filePath: PathLike, data: string): Promise<void> {
   });
 }
 
-export function readJSON(filePath: PathLike): Promise<JSON> {
+export function readJSON<T = string>(filePath: PathLike): Promise<T> {
   return new Promise((resolve, reject) => {
     readFile(filePath, 'utf-8', (err, data) => {
       if (err) return reject(err);
