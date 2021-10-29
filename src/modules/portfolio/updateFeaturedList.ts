@@ -1,6 +1,6 @@
 import { Browser, chromium, Page } from 'playwright';
-import { writeJSON, readJSON } from '../../shared/file';
-import { PORTFOLIO_MODULE_PATH } from '../../shared/constants';
+import { writeJSON, readJSON } from '@shared/file';
+import { PORTFOLIO_MODULE_PATH } from '@shared/constants';
 import { Repo } from './types/Repo';
 
 async function updateFeaturedList(moduleName: string, username: string): Promise<void> {

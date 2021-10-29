@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/rest';
-import { writeJSON } from '../../shared/file';
-import { uploadChanges } from '../../shared/api';
-import { PORTFOLIO_MODULE_PATH } from '../../shared/constants';
+import { writeJSON } from '@shared/file';
+import { uploadChanges } from '@shared/api';
+import { PORTFOLIO_MODULE_PATH } from '@shared/constants';
 
 const octokit = new Octokit();
 const REPOS_PATH = `${PORTFOLIO_MODULE_PATH}repos/index.json`;

@@ -1,6 +1,6 @@
 import { prompt, ListQuestionOptions } from 'inquirer';
-import updateReposList from './updateReposList';
 import updateFeaturedList from './updateFeaturedList';
+import updateReposList from './updateReposList';
 
 const MODULE_NAME = 'portfolio';
 const OPTIONS_TEXT = ['Update repository list', 'Update featured list', 'Exit'];

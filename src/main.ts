@@ -1,6 +1,6 @@
 import { prompt, ListQuestionOptions } from 'inquirer';
-import { MODULES_PATH } from './shared/constants';
-import { getDirectoriesNames } from './shared/file';
+import { getDirectoriesNames } from '@shared/file';
+import { MODULES_PATH } from '@shared/constants';
 
 const modules = getDirectoriesNames(MODULES_PATH);
 
