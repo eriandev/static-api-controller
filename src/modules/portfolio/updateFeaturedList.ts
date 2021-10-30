@@ -1,7 +1,7 @@
 import { Browser, chromium, Page } from 'playwright';
 import { writeJSON, readJSON } from '@shared/file';
 import { PORTFOLIO_MODULE_PATH } from '@shared/constants';
-import { Repo } from './types/Repo';
+import { Repo } from '@types';
 
 async function updateFeaturedList(moduleName: string, username: string): Promise<void> {
   const { browser, page } = await getBrowserAndNewPage();
