@@ -1,7 +1,7 @@
 import { Browser, chromium, Page } from 'playwright';
 import { writeJSON, readJSON } from '@shared/file';
 import { PORTFOLIO_MODULE_PATH } from '@shared/constants';
-import { Repo } from '@types';
+import { CleanRepo } from '@types';
 
 async function updateFeaturedList(moduleName: string, username: string): Promise<void> {
   const { browser, page } = await getBrowserAndNewPage();
@@ -44,9 +44,9 @@ async function getBrowserAndNewPage(): Promise<{ browser: Browser; page: Page }>
   return { browser, page };
 }
 
-async function getFilteredReposByName(names: Array<string>): Promise<Repo[]> {
+async function getFilteredReposByName(names: Array<string>): Promise<CleanRepo[]> {
   const REPOS_PATH = `${PORTFOLIO_MODULE_PATH}repos/index.json`;
-  const repos = await readJSON<Repo[]>(REPOS_PATH);
+  const repos = await readJSON<CleanRepo[]>(REPOS_PATH);
 
   return repos.filter((repo) => names.includes(repo.name));
 }
