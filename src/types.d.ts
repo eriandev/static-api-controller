@@ -7,7 +7,7 @@ declare namespace NodeJS {
   }
 }
 
-type SelectedRepoAttrs = 'id' | 'size' | 'fork' | 'description' | 'stargazers_count' | 'forks_count' | 'watchers_count' | 'language' | 'archived';
+type SelectedRepoAttrs = 'id' | 'size' | 'fork' | 'description' | 'stargazers_count' | 'forks_count' | 'watchers_count' | 'language' | 'archived' | 'disabled';
 type ExtraRepoAttrs = { name: string; license?: string; url: PathLike; demo?: PathLike | null };
 
 export declare type CleanRepo = Partial<Pick<DirtyRepo, SelectedRepoAttrs>> & ExtraRepoAttrs;

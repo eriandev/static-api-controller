@@ -15,21 +15,24 @@ async function updateReposList(moduleName: string, username: string): Promise<vo
 }
 
 function getCleanReposList(data: DirtyRepo[]): CleanRepo[] {
-  return data.map((repo) => ({
-    id: repo.id,
-    name: repo.name,
-    description: repo.description,
-    license: repo.license?.spdx_id,
-    language: repo.language,
-    archived: repo.archived,
-    fork: repo.fork,
-    size: repo.size,
-    forks_count: repo.forks_count,
-    watchers_count: repo.watchers_count,
-    stargazers_count: repo.stargazers_count,
-    url: repo.html_url,
-    demo: repo.homepage,
-  }));
+  return data
+    .map((repo) => ({
+      id: repo.id,
+      name: repo.name,
+      description: repo.description,
+      license: repo.license?.spdx_id,
+      language: repo.language,
+      fork: repo.fork,
+      size: repo.size,
+      forks_count: repo.forks_count,
+      watchers_count: repo.watchers_count,
+      stargazers_count: repo.stargazers_count,
+      url: repo.html_url,
+      demo: repo.homepage,
+      archived: repo.archived,
+      disabled: repo.disabled,
+    }))
+    .filter((repo) => !repo.disabled && !repo.archived);
 }
 
 export default updateReposList;
