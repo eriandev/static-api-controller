@@ -1,6 +1,7 @@
 import { Octokit } from '@octokit/rest';
 import { writeJSON } from '@shared/file';
 // import { uploadChanges } from '@shared/api';
+import { getBrowserAndNewPage } from '@shared/utils';
 import { PORTFOLIO_MODULE_PATH } from '@shared/constants';
 import { CleanRepo, DirtyRepo } from '@types';
 
@@ -10,7 +11,10 @@ const REPOS_PATH = `${PORTFOLIO_MODULE_PATH}repos/index.json`;
 async function updateReposList(moduleName: string, username: string): Promise<void> {
   const { data } = await octokit.rest.repos.listForUser({ username });
 
-  await writeJSON(REPOS_PATH, JSON.stringify(getCleanReposList(data)));
+  const cleanRepos = getCleanReposList(data);
+  const cleanReposWithTopics = await getReposWithTopics(cleanRepos);
+
+  await writeJSON(REPOS_PATH, JSON.stringify(cleanReposWithTopics));
   // uploadChanges(moduleName);
 }
 
@@ -31,8 +35,29 @@ function getCleanReposList(data: DirtyRepo[]): CleanRepo[] {
       demo: repo.homepage,
       archived: repo.archived,
       disabled: repo.disabled,
+      topics: [],
     }))
     .filter((repo) => !repo.disabled && !repo.archived);
+}
+
+async function getReposWithTopics(repos: CleanRepo[]): Promise<CleanRepo[]> {
+  const { browser, page } = await getBrowserAndNewPage();
+
+  for await (const repo of repos) {
+    await page.goto(repo.url.toString()).catch((err: Error) => console.error(err));
+
+    const topics = await page.$$eval('[data-ga-click="Topic, repository page"]', (repoTopics) =>
+      repoTopics.map((repoTopic) => {
+        const anchor = repoTopic as HTMLElement;
+        return anchor.innerText.trim();
+      }),
+    );
+
+    repo.topics = topics;
+  }
+
+  await browser.close();
+  return repos;
 }
 
 export default updateReposList;
