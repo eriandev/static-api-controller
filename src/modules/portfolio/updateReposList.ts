@@ -37,7 +37,7 @@ function getCleanReposList(data: DirtyRepo[]): CleanRepo[] {
       disabled: repo.disabled,
       topics: [],
     }))
-    .filter((repo) => !repo.disabled && !repo.archived);
+    .filter((repo) => !repo.disabled && !repo.archived && !repo.fork);
 }
 
 async function getReposWithTopics(repos: CleanRepo[]): Promise<CleanRepo[]> {
