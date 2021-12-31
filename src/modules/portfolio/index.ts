@@ -1,4 +1,5 @@
-import { prompt, ListQuestionOptions } from 'inquirer';
+import { prompt } from 'inquirer';
+import type { ListQuestionOptions } from 'inquirer';
 import updateFeaturedList from './updateFeaturedList';
 import updateReposList from './updateReposList';
 

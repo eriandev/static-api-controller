@@ -1,4 +1,5 @@
-import { PathLike, readdirSync, writeFile, readFile } from 'fs';
+import { readdirSync, writeFile, readFile } from 'fs';
+import type { PathLike } from 'fs';
 
 export function getDirectoriesNames(source: PathLike): Array<string> {
   return readdirSync(source, { withFileTypes: true })

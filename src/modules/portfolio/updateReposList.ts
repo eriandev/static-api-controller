@@ -3,7 +3,7 @@ import { writeJSON } from '@shared/file';
 // import { uploadChanges } from '@shared/api';
 import { getBrowserAndNewPage } from '@shared/utils';
 import { PORTFOLIO_MODULE_PATH } from '@shared/constants';
-import { CleanRepo, DirtyRepo } from '@types';
+import type { CleanRepo, DirtyRepo } from '@types';
 
 const octokit = new Octokit();
 const REPOS_PATH = `${PORTFOLIO_MODULE_PATH}repos/index.json`;
