@@ -1,4 +1,4 @@
-import { readdirSync, writeFile, readFile } from 'fs';
+import { readdirSync, existsSync, mkdirSync, writeFile, readFile } from 'fs';
 import type { PathLike } from 'fs';
 
 export function getDirectoriesNames(source: PathLike): Array<string> {
@@ -8,12 +8,18 @@ export function getDirectoriesNames(source: PathLike): Array<string> {
 }
 
 export function writeJSON(filePath: PathLike, data: string): Promise<void> {
-  const FILE_NAME = filePath.toString().split('/').slice(-2)[0];
+  const FILE_PATH = filePath.toString();
+  const DIRECTORY_NAME = FILE_PATH.split('/').slice(-2)[0];
+  const DIRECTORY_PATH = FILE_PATH.split('/', FILE_PATH.split('/').length - 1)
+    .join('/')
+    .toString();
 
   return new Promise((resolve, reject) => {
+    if (!existsSync(DIRECTORY_PATH)) mkdirSync(DIRECTORY_PATH);
+
     writeFile(filePath, data, (err) => {
       if (err) return reject(err);
-      resolve(console.log(`[sac] ${FILE_NAME} file updated`));
+      resolve(console.log(`[sac] ${DIRECTORY_NAME} file updated`));
     });
   });
 }
