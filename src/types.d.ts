@@ -1,4 +1,4 @@
-import type { PathLike } from 'fs';
+import type { PathLike, TimeLike } from 'fs';
 import type { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods';
 
 declare namespace NodeJS {
@@ -12,3 +12,24 @@ type ExtraRepoAttrs = { name: string; license?: string; url: PathLike; demo?: Pa
 
 export type CleanRepo = Partial<Pick<DirtyRepo, SelectedRepoAttrs>> & ExtraRepoAttrs;
 export type DirtyRepo = RestEndpointMethodTypes['repos']['listForUser']['response']['data'][0];
+
+export interface Job {
+  id: string;
+  url: PathLike;
+  title: string;
+  company_name: string;
+  category: string;
+  tags: string[];
+  job_type: string;
+  publication_date: TimeLike;
+  candidate_required_location: string;
+  salary: string;
+  description: string;
+  company_logo_url: PathLike;
+}
+
+export interface JobsListRespose {
+  '0-legal-notice': string;
+  'job-count': number;
+  jobs: Job[];
+}
