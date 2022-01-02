@@ -9,16 +9,20 @@ async function updateJobsList(): Promise<void> {
   try {
     const response = await fetch(REMOTIVE_API_URL);
     const jobsResponse: JobsListRespose = await response.json();
+    const paginateArguments = {
+      jobsList: jobsResponse.jobs,
+      pathBase: `${API_PUBLIC_PATH}/remotive/`,
+    };
 
     writeJSON(REMOTIVE_JOBS_LIST_PATH, JSON.stringify(jobsResponse));
 
-    paginateJobsList(jobsResponse.jobs);
+    paginateJobsList(paginateArguments);
   } catch (error) {
     console.error(error);
   }
 }
 
-function paginateJobsList(jobsList: Job[]): void {
+function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: string }): void {
   const TOTAL_PAGES = Math.ceil(jobsList.length / 10);
 
   let initBlock = 0;
@@ -35,7 +39,7 @@ function paginateJobsList(jobsList: Job[]): void {
       results: jobsList.slice(initBlock, endBlock),
     };
 
-    writeJSON(`${API_PUBLIC_PATH}/remotive/${index}/index.json`, JSON.stringify(pageContent));
+    writeJSON(`${pathBase + index}/index.json`, JSON.stringify(pageContent));
 
     initBlock += 10;
     endBlock += 10;
