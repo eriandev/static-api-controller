@@ -1,10 +1,10 @@
 import fetch from 'node-fetch';
 import { writeJSON } from '@shared/file';
-import { PORTFOLIO_MODULE_PATH, REMOTIVE_API_URL } from '@shared/constants';
+import { API_PUBLIC_PATH, REMOTIVE_API_URL } from '@shared/constants';
 import type { Job, JobsListRespose } from '@types';
 
 async function updateJobsList(): Promise<void> {
-  const REMOTIVE_JOBS_LIST_PATH = `${PORTFOLIO_MODULE_PATH}remotive/index.json`;
+  const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive/index.json`;
 
   try {
     const response = await fetch(REMOTIVE_API_URL);
@@ -35,7 +35,7 @@ function paginateJobsList(jobsList: Job[]): void {
       results: jobsList.slice(initBlock, endBlock),
     };
 
-    writeJSON(`${PORTFOLIO_MODULE_PATH}remotive/${index}/index.json`, JSON.stringify(pageContent));
+    writeJSON(`${API_PUBLIC_PATH}/remotive/${index}/index.json`, JSON.stringify(pageContent));
 
     initBlock += 10;
     endBlock += 10;

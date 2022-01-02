@@ -8,7 +8,7 @@ const { env } = process;
 export { version } from '../../package.json';
 
 export const API_PATH = env.API_PATH;
+export const API_PUBLIC_PATH = `${API_PATH}/public`;
 export const MODULES_PATH = path.resolve(__dirname, '../modules');
-export const PORTFOLIO_MODULE_PATH = `${API_PATH}public/`;
 
 export const REMOTIVE_API_URL = 'https://remotive.io/api/remote-jobs';

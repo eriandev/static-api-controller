@@ -2,11 +2,11 @@ import { Octokit } from '@octokit/rest';
 import { writeJSON } from '@shared/file';
 // import { uploadChanges } from '@shared/api';
 import { getBrowserAndNewPage } from '@shared/utils';
-import { PORTFOLIO_MODULE_PATH } from '@shared/constants';
+import { API_PUBLIC_PATH } from '@shared/constants';
 import type { CleanRepo, DirtyRepo } from '@types';
 
 const octokit = new Octokit();
-const REPOS_PATH = `${PORTFOLIO_MODULE_PATH}repos/index.json`;
+const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`;
 
 async function updateReposList(moduleName: string, username: string): Promise<void> {
   const { data } = await octokit.rest.repos.listForUser({ username });

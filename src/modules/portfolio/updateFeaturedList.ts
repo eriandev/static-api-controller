@@ -1,6 +1,6 @@
 import { writeJSON, readJSON } from '@shared/file';
 import { getBrowserAndNewPage } from '@shared/utils';
-import { PORTFOLIO_MODULE_PATH } from '@shared/constants';
+import { API_PUBLIC_PATH } from '@shared/constants';
 import type { CleanRepo } from '@types';
 
 async function updateFeaturedList(moduleName: string, username: string): Promise<void> {
@@ -20,13 +20,13 @@ async function updateFeaturedList(moduleName: string, username: string): Promise
   await browser.close();
 
   const featuredRepos = await getFilteredReposByName(featuredTitles);
-  const FEATURED_REPOS_PATH = `${PORTFOLIO_MODULE_PATH}featured/index.json`;
+  const FEATURED_REPOS_PATH = `${API_PUBLIC_PATH}/featured/index.json`;
 
   await writeJSON(FEATURED_REPOS_PATH, JSON.stringify(featuredRepos));
 }
 
 async function getFilteredReposByName(names: Array<string>): Promise<CleanRepo[]> {
-  const REPOS_PATH = `${PORTFOLIO_MODULE_PATH}repos/index.json`;
+  const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`;
   const repos = await readJSON<CleanRepo[]>(REPOS_PATH);
 
   return repos.filter((repo) => names.includes(repo.name));
