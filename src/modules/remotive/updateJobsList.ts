@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { slugify } from '@shared/utils';
 import { writeJSON } from '@shared/file';
-import { API_PUBLIC_PATH, REMOTIVE_API_URL } from '@shared/constants';
+import { API_URL, API_PUBLIC_PATH, REMOTIVE_API_URL } from '@shared/constants';
 import type { Job, JobsListRespose, CategorizableJobAtrrs } from '@types';
 
 async function updateJobsList(): Promise<void> {
@@ -32,8 +32,8 @@ function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: s
   let endBlock = 10;
 
   for (let index = 1; index <= TOTAL_PAGES; index++) {
-    const prevPage = { prev: `https://erianvc.github.io/api/remotive/${index - 1}` };
-    const nextPage = { next: `https://erianvc.github.io/api/remotive/${index + 1}` };
+    const prevPage = { prev: `${API_URL}/remotive/${index - 1}` };
+    const nextPage = { next: `${API_URL}/remotive/${index + 1}` };
     const pageContent = {
       total_pages: TOTAL_PAGES,
       jobs_per_page: 10,
