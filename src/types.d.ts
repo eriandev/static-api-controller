@@ -12,10 +12,11 @@ type ExtraRepoAttrs = { name: string; license?: string; url: PathLike; demo?: Pa
 
 export type CleanRepo = Partial<Pick<DirtyRepo, SelectedRepoAttrs>> & ExtraRepoAttrs;
 export type DirtyRepo = RestEndpointMethodTypes['repos']['listForUser']['response']['data'][0];
+export type CategorizableJobAtrrs = keyof Pick<Job, 'category' | 'job_type'>;
 
 export interface Job {
   id: string;
-  url: PathLike;
+  url: string;
   title: string;
   company_name: string;
   category: string;
@@ -25,7 +26,7 @@ export interface Job {
   candidate_required_location: string;
   salary: string;
   description: string;
-  company_logo_url: PathLike;
+  company_logo_url: string;
 }
 
 export interface JobsListRespose {
