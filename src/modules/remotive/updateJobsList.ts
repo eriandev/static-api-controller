@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { slugify } from '@shared/utils';
 import { writeJSON } from '@shared/file';
 import { API_PUBLIC_PATH, REMOTIVE_API_URL } from '@shared/constants';
 import type { Job, JobsListRespose, CategorizableJobAtrrs } from '@types';
@@ -52,28 +53,18 @@ function categorizeJobsListBy(category: CategorizableJobAtrrs, jobsList: Job[]):
   const cateValues: string[] = [];
 
   for (const job of jobsList) {
-    const slugifyCategory = job[category]
-      .replaceAll('_', '-')
-      .toLowerCase()
-      .split(' ')
-      .filter((word) => /[a-z0-9]/.test(word))
-      .join('-');
+    const slugifyCategory = slugify(job[category]);
     if (slugifyCategory) !cateValues.includes(slugifyCategory) && cateValues.push(slugifyCategory);
   }
 
   for (const value of cateValues) {
     const categorizedJobsList = jobsList.filter((job) => {
-      const slugifyCategory = job[category]
-        .replaceAll('_', '-')
-        .toLowerCase()
-        .split(' ')
-        .filter((word) => /[a-z0-9]/.test(word))
-        .join('-');
+      const slugifyCategory = slugify(job[category]);
       return slugifyCategory === value;
     });
     const paginateArguments = {
       jobsList: categorizedJobsList,
-      pathBase: `${API_PUBLIC_PATH}/remotive/${category.replaceAll('_', '-')}/${value}/`,
+      pathBase: `${API_PUBLIC_PATH}/remotive/${slugify(category)}/${value}/`,
     };
 
     paginateJobsList(paginateArguments);

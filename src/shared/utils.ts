@@ -1,4 +1,5 @@
-import { Browser, chromium, Page } from 'playwright';
+import { chromium } from 'playwright';
+import type { Browser, Page } from 'playwright';
 
 export async function getBrowserAndNewPage(): Promise<{ browser: Browser; page: Page }> {
   const browser = await chromium.launch({
@@ -17,4 +18,13 @@ export async function getBrowserAndNewPage(): Promise<{ browser: Browser; page: 
   const page = await context.newPage();
 
   return { browser, page };
+}
+
+export function slugify(text: string): string {
+  return text
+    .replaceAll('_', '-')
+    .toLowerCase()
+    .split(' ')
+    .filter((word) => /[a-z0-9]/.test(word))
+    .join('-');
 }
