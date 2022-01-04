@@ -15,7 +15,7 @@ export function writeJSON(filePath: PathLike, data: string): Promise<void> {
     .toString();
 
   return new Promise((resolve, reject) => {
-    if (!existsSync(DIRECTORY_PATH)) mkdirSync(DIRECTORY_PATH);
+    if (!existsSync(DIRECTORY_PATH)) mkdirSync(DIRECTORY_PATH, { recursive: true });
 
     writeFile(filePath, data, (err) => {
       if (err) return reject(err);
