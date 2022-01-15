@@ -15,17 +15,17 @@ async function updateJobsList(): Promise<void> {
       pathBase: `${API_PUBLIC_PATH}/remotive/`,
     };
 
-    writeJSON(REMOTIVE_JOBS_LIST_PATH, JSON.stringify(jobsResponse));
+    await writeJSON(REMOTIVE_JOBS_LIST_PATH, JSON.stringify(jobsResponse));
 
-    paginateJobsList(paginateArguments);
-    categorizeJobsListBy('category', jobsResponse.jobs);
-    categorizeJobsListBy('job_type', jobsResponse.jobs);
+    await paginateJobsList(paginateArguments);
+    await categorizeJobsListBy('category', jobsResponse.jobs);
+    await categorizeJobsListBy('job_type', jobsResponse.jobs);
   } catch (error) {
-    console.error(error);
+    console.error(`[sac:error] ${error}`);
   }
 }
 
-function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: string }): void {
+async function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: string }): Promise<void> {
   const TOTAL_PAGES = Math.ceil(jobsList.length / 10);
 
   let initBlock = 0;
@@ -42,14 +42,14 @@ function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: s
       results: jobsList.slice(initBlock, endBlock),
     };
 
-    writeJSON(`${pathBase + index}/index.json`, JSON.stringify(pageContent));
+    await writeJSON(`${pathBase + index}/index.json`, JSON.stringify(pageContent));
 
     initBlock += 10;
     endBlock += 10;
   }
 }
 
-function categorizeJobsListBy(category: CategorizableJobAtrrs, jobsList: Job[]): void {
+async function categorizeJobsListBy(category: CategorizableJobAtrrs, jobsList: Job[]): Promise<void> {
   const cateValues: string[] = [];
 
   for (const job of jobsList) {
@@ -67,8 +67,11 @@ function categorizeJobsListBy(category: CategorizableJobAtrrs, jobsList: Job[]):
       pathBase: `${API_PUBLIC_PATH}/remotive/${slugify(category)}/${value}/`,
     };
 
-    paginateJobsList(paginateArguments);
+    await paginateJobsList(paginateArguments);
+    console.log(`[sac] ${value} sub-category updated`);
   }
+
+  console.log(`[sac] ${category} category completed`);
 }
 
 export default updateJobsList;

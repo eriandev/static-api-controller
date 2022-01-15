@@ -25,11 +25,11 @@ async function updateFeaturedList(moduleName: string, username: string): Promise
   await writeJSON(FEATURED_REPOS_PATH, JSON.stringify(featuredRepos));
 }
 
-async function getFilteredReposByName(names: Array<string>): Promise<CleanRepo[]> {
+async function getFilteredReposByName(names: Array<string>): Promise<CleanRepo[] | null> {
   const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`;
   const repos = await readJSON<CleanRepo[]>(REPOS_PATH);
 
-  return repos.filter((repo) => names.includes(repo.name));
+  return repos ? repos.filter((repo) => names.includes(repo.name)) : null;
 }
 
 export default updateFeaturedList;
