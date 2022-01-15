@@ -15,7 +15,7 @@
     "inquirer": "^8.2.0",
     "node-fetch": "^2.6.6",
     "playwright": "^1.17.1",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   },
   "devDependencies": {
     "@types/inquirer": "^8.1.3",
