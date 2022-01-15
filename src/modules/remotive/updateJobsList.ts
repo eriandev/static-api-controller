@@ -1,14 +1,14 @@
 import fetch from 'node-fetch';
 import { slugify } from '@shared/utils';
 import { writeJSON } from '@shared/file';
-import { API_URL, API_PUBLIC_PATH, REMOTIVE_API_URL } from '@shared/constants';
+import { API_URL, API_PUBLIC_PATH, JOBS_API_URL } from '@shared/constants';
 import type { Job, JobsListRespose, CategorizableJobAtrrs } from '@types';
 
 async function updateJobsList(): Promise<void> {
   const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive/index.json`;
 
   try {
-    const response = await fetch(REMOTIVE_API_URL);
+    const response = await fetch(JOBS_API_URL);
     const jobsResponse: JobsListRespose = await response.json();
     const paginateArguments = {
       jobsList: jobsResponse.jobs,
