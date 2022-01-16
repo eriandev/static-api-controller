@@ -1,11 +1,15 @@
 import { existsSync, readdirSync } from 'fs';
-import { mkdir, writeFile, readFile } from 'fs/promises';
+import { rm, mkdir, writeFile, readFile } from 'fs/promises';
 import type { PathLike } from 'fs';
 
 export function getDirectoriesNames(source: PathLike): Array<string> {
   return readdirSync(source, { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
+}
+
+export async function emptyDirectory(directoryPath: PathLike): Promise<void> {
+  await rm(directoryPath, { recursive: true });
 }
 
 export async function writeJSON(filePath: PathLike, data: string): Promise<void> {

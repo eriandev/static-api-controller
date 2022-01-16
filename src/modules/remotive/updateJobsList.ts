@@ -1,25 +1,25 @@
 import fetch from 'node-fetch';
 import { slugify } from '@shared/utils';
-import { writeJSON } from '@shared/file';
+import { emptyDirectory, writeJSON } from '@shared/file';
 import { API_URL, API_PUBLIC_PATH, JOBS_API_URL } from '@shared/constants';
 import type { Job, JobsListRespose, CategorizableJobAtrrs } from '@types';
 
 async function updateJobsList(): Promise<void> {
-  const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive/index.json`;
+  const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive`;
 
   try {
     const response = await fetch(JOBS_API_URL);
-    const jobsResponse: JobsListRespose = await response.json();
+    const { jobs }: JobsListRespose = await response.json();
     const paginateArguments = {
-      jobsList: jobsResponse.jobs,
+      jobsList: jobs,
       pathBase: `${API_PUBLIC_PATH}/remotive/`,
     };
 
-    await writeJSON(REMOTIVE_JOBS_LIST_PATH, JSON.stringify(jobsResponse));
+    await emptyDirectory(REMOTIVE_JOBS_LIST_PATH);
 
     await paginateJobsList(paginateArguments);
-    await categorizeJobsListBy('category', jobsResponse.jobs);
-    await categorizeJobsListBy('job_type', jobsResponse.jobs);
+    await categorizeJobsListBy('category', jobs);
+    await categorizeJobsListBy('job_type', jobs);
   } catch (error) {
     console.error(`[sac:error] ${error}`);
   }
