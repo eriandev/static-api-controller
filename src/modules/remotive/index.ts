@@ -2,6 +2,7 @@ import { prompt } from 'inquirer';
 import type { ListQuestionOptions } from 'inquirer';
 import updateJobsList from './updateJobsList';
 
+const MODULE_NAME = 'remotive';
 const OPTIONS_TEXT = ['Update jobs list', 'Exit'];
 
 async function showOptions(): Promise<void> {
@@ -17,7 +18,7 @@ async function showOptions(): Promise<void> {
   switch (answers['chosenFunction']) {
     case OPTIONS_TEXT[0]:
       console.log(OPTIONS_TEXT[0]);
-      updateJobsList();
+      updateJobsList(MODULE_NAME);
       break;
 
     case OPTIONS_TEXT[1]:

@@ -1,10 +1,11 @@
 import fetch from 'node-fetch';
 import { slugify } from '@shared/utils';
+import { uploadChanges } from '@shared/api';
 import { emptyDirectory, writeJSON } from '@shared/file';
 import { API_URL, API_PUBLIC_PATH, JOBS_API_URL } from '@shared/constants';
 import type { Job, JobsListRespose, CategorizableJobAtrrs } from '@types';
 
-async function updateJobsList(): Promise<void> {
+async function updateJobsList(moduleName: string): Promise<void> {
   const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive`;
 
   try {
@@ -20,6 +21,8 @@ async function updateJobsList(): Promise<void> {
     await paginateJobsList(paginateArguments);
     await categorizeJobsListBy('category', jobs);
     await categorizeJobsListBy('job_type', jobs);
+
+    uploadChanges(moduleName);
   } catch (error) {
     console.error(`[sac:error] ${error}`);
   }
