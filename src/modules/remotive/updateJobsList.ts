@@ -29,6 +29,7 @@ async function updateJobsList(moduleName: string): Promise<void> {
 }
 
 async function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: string }): Promise<void> {
+  const JOB_COUNT = jobsList.length;
   const TOTAL_PAGES = Math.ceil(jobsList.length / 10);
 
   let initBlock = 0;
@@ -38,6 +39,7 @@ async function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathB
     const prevPage = { prev: `${API_URL}/remotive/${index - 1}` };
     const nextPage = { next: `${API_URL}/remotive/${index + 1}` };
     const pageContent = {
+      job_count: JOB_COUNT,
       total_pages: TOTAL_PAGES,
       jobs_per_page: 10,
       ...(index > 1 && prevPage),
@@ -74,6 +76,12 @@ async function categorizeJobsListBy(category: CategorizableJobAtrrs, jobsList: J
     console.log(`[sac] ${value} sub-category updated`);
   }
 
+  const pageContent = {
+    tag_count: cateValues.length,
+    tags: cateValues,
+  };
+
+  await writeJSON(`${API_PUBLIC_PATH}/remotive/${slugify(category)}/index.json`, JSON.stringify(pageContent));
   console.log(`[sac] ${category} category completed`);
 }
 
