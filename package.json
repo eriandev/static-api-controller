@@ -13,7 +13,7 @@
   "dependencies": {
     "@octokit/rest": "18.12.0",
     "inquirer": "8.2.0",
-    "node-fetch": "2.6.6",
+    "node-fetch": "2.6.7",
     "playwright": "1.19.1",
     "shelljs": "0.8.5"
   },
