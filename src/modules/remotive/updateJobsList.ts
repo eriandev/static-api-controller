@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { slugify } from '@shared/utils';
 import { uploadChanges } from '@shared/api';
 import { emptyDirectory, writeJSON } from '@shared/file';
