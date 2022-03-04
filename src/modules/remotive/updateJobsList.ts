@@ -1,25 +1,28 @@
-import { slugify } from '@shared/utils';
-import { uploadChanges } from '@shared/api';
-import { emptyDirectory, writeJSON } from '@shared/file';
-import { API_URL, API_PUBLIC_PATH, JOBS_API_URL } from '@shared/constants';
-import type { Job, JobsListRespose, CategorizableJobAtrrs } from '@types';
+import { slugify } from '@/shared/utils.ts';
+import { uploadChanges } from '@/shared/api.ts';
+import { emptyDirectory, writeJSON } from '@/shared/file.ts';
+import { API_PUBLIC_PATH, API_URL, JOBS_API_URL } from '@/shared/constants.ts';
+import type { CategorizableJobAtrrs, Job, JobsListResponse } from './types.ts';
 
-async function updateJobsList(moduleName: string): Promise<void> {
+export async function main(moduleName: string): Promise<void> {
   const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive`;
 
   try {
     const response = await fetch(JOBS_API_URL);
-    const { jobs }: JobsListRespose = await response.json();
+    const { jobs }: JobsListResponse = await response.json();
     const paginateArguments = {
       jobsList: jobs,
       pathBase: `${API_PUBLIC_PATH}/remotive/`,
     };
 
     await emptyDirectory(REMOTIVE_JOBS_LIST_PATH);
-
-    await paginateJobsList(paginateArguments);
-    await categorizeJobsListBy('category', jobs);
-    await categorizeJobsListBy('job_type', jobs);
+    await Promise.allSettled([
+      saveMetadata(JOBS_API_URL),
+      categorizeJobsByLocation(jobs),
+      paginateJobsList(paginateArguments),
+      categorizeJobsListBy('category', jobs),
+      categorizeJobsListBy('job_type', jobs),
+    ]);
 
     uploadChanges(moduleName);
   } catch (error) {
@@ -84,4 +87,39 @@ async function categorizeJobsListBy(category: CategorizableJobAtrrs, jobsList: J
   console.log(`[sac] ${category} category completed`);
 }
 
-export default updateJobsList;
+async function categorizeJobsByLocation(jobsList: Job[]): Promise<void> {
+  const locationList = ['Worldwide', 'USA Only', 'Other Locations'];
+  const locationListLowered = locationList.map((tag) => tag.toLocaleLowerCase());
+
+  for (const location of locationListLowered) {
+    const specifiLocationList = jobsList.filter((job) => location === job.candidate_required_location.toLowerCase());
+    const otherLocationsList = jobsList.filter((job) => {
+      const candidateRequiredLocation = job.candidate_required_location.toLowerCase();
+      return locationListLowered[0] !== candidateRequiredLocation && locationListLowered[1] !== candidateRequiredLocation;
+    });
+    const categorizedJobsList = location === 'other locations' ? otherLocationsList : specifiLocationList;
+    const paginateArguments = {
+      jobsList: categorizedJobsList,
+      pathBase: `${API_PUBLIC_PATH}/remotive/required-location/${slugify(location)}/`,
+    };
+
+    await paginateJobsList(paginateArguments);
+    console.log(`[sac] ${location} sub-category updated`);
+  }
+
+  const pageContent = {
+    tag_count: locationList.length,
+    tags: locationList,
+  };
+
+  await writeJSON(`${API_PUBLIC_PATH}/remotive/required-location/index.json`, JSON.stringify(pageContent));
+  console.log(`[sac] required location category completed`);
+}
+
+async function saveMetadata(remotive_api: string): Promise<void> {
+  const last_update = new Date().getTime();
+  const metadateObject = { last_update, remotive_api };
+
+  await writeJSON(`${API_PUBLIC_PATH}/remotive/index.json`, JSON.stringify(metadateObject));
+  console.log(`[sac] metadata saved`);
+}

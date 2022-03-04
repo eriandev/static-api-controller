@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+
+  "tasks": {
+    "dev": "deno run --allow-sys --allow-read --allow-write --allow-env --allow-net=api.github.com --watch=src/ src/main.ts",
+    "start": "deno run --allow-sys --allow-read --allow-write --allow-env --allow-run --allow-net=api.github.com,remotive.io src/main.ts",
+    "reload": "deno cache --reload --lock=deno.lock --lock-write src/main.ts",
+    "build": "deno bundle src/main.ts build/bundle.js"
+  },
+
+  "importMap": "imports.json",
+
+  "compilerOptions": {
+    "strict": true,
+    "lib": [
+      "dom",
+      "deno.ns",
+      "deno.unstable"
+    ]
+  },
+
+  "lint": {
+    "files": {
+      "include": ["src/"]
+    },
+    "rules": {
+      "tags": ["recommended"],
+      "exclude": ["no-unused-vars"]
+    }
+  },
+
+  "fmt": {
+    "files": {
+      "include": ["src/"]
+    },
+    "options": {
+      "useTabs": false,
+      "lineWidth": 180,
+      "indentWidth": 2,
+      "singleQuote": true,
+      "proseWrap": "preserve"
+    }
+  }
+}

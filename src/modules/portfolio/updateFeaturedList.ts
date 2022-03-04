@@ -1,9 +1,9 @@
-import { writeJSON, readJSON } from '@shared/file';
-import { getBrowserAndNewPage } from '@shared/utils';
-import { API_PUBLIC_PATH } from '@shared/constants';
-import type { CleanRepo } from '@types';
+import { readJSON, writeJSON } from '@/shared/file.ts';
+import { API_PUBLIC_PATH } from '@/shared/constants.ts';
+import { getBrowserAndNewPage } from '@/shared/utils.ts';
+import type { CleanRepo } from '@/modules/portfolio/types.ts';
 
-async function updateFeaturedList(moduleName: string, username: string): Promise<void> {
+export async function main(moduleName: string, username: string): Promise<void> {
   const { browser, page } = await getBrowserAndNewPage();
   await page.goto(`https://github.com/${username}`).catch((err: Error) => console.error(err));
 
@@ -31,5 +31,3 @@ async function getFilteredReposByName(names: Array<string>): Promise<CleanRepo[]
 
   return repos ? repos.filter((repo) => names.includes(repo.name)) : null;
 }
-
-export default updateFeaturedList;
