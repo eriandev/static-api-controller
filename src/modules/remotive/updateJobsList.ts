@@ -10,7 +10,7 @@ async function updateJobsList(moduleName: string): Promise<void> {
 
   try {
     const response = await fetch(JOBS_API_URL);
-    const { jobs }: JobsListRespose = await response.json();
+    const { jobs }: JobsListRespose = await response.json() as JobsListRespose;
     const paginateArguments = {
       jobsList: jobs,
       pathBase: `${API_PUBLIC_PATH}/remotive/`,
