@@ -21,6 +21,7 @@ async function updateJobsList(moduleName: string): Promise<void> {
     await paginateJobsList(paginateArguments);
     await categorizeJobsListBy('category', jobs);
     await categorizeJobsListBy('job_type', jobs);
+    await categorizeJobsByLocation(jobs);
 
     uploadChanges(moduleName);
   } catch (error) {
@@ -83,6 +84,35 @@ async function categorizeJobsListBy(category: CategorizableJobAtrrs, jobsList: J
 
   await writeJSON(`${API_PUBLIC_PATH}/remotive/${slugify(category)}/index.json`, JSON.stringify(pageContent));
   console.log(`[sac] ${category} category completed`);
+}
+
+async function categorizeJobsByLocation(jobsList: Job[]): Promise<void> {
+  const locationList = ['Worldwide', 'USA Only', 'Other Locations'];
+  const locationListLowered = locationList.map((tag) => tag.toLocaleLowerCase());
+
+  for (const location of locationListLowered) {
+    const specifiLocationList = jobsList.filter((job) => location === job.candidate_required_location.toLowerCase());
+    const otherLocationsList = jobsList.filter((job) => {
+      const candidateRequiredLocation = job.candidate_required_location.toLowerCase();
+      return locationListLowered[0] !== candidateRequiredLocation && locationListLowered[1] !== candidateRequiredLocation;
+    });
+    const categorizedJobsList = location === 'other locations' ? otherLocationsList : specifiLocationList;
+    const paginateArguments = {
+      jobsList: categorizedJobsList,
+      pathBase: `${API_PUBLIC_PATH}/remotive/required-location/${slugify(location)}/`,
+    };
+
+    await paginateJobsList(paginateArguments);
+    console.log(`[sac] ${location} sub-category updated`);
+  }
+
+  const pageContent = {
+    tag_count: locationList.length,
+    tags: locationList,
+  };
+
+  await writeJSON(`${API_PUBLIC_PATH}/remotive/required-location/index.json`, JSON.stringify(pageContent));
+  console.log(`[sac] required location category completed`);
 }
 
 export default updateJobsList;
