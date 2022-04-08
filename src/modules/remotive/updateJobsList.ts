@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
 import { slugify } from '@shared/utils';
 import { uploadChanges } from '@shared/api';
 import { emptyDirectory, writeJSON } from '@shared/file';
@@ -9,16 +9,15 @@ async function updateJobsList(moduleName: string): Promise<void> {
   const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive`;
 
   try {
-    const response = await fetch(JOBS_API_URL);
-    const { jobs }: JobsListResponse = (await response.json()) as JobsListResponse;
+    const response = await axios.get<JobsListResponse>(JOBS_API_URL);
+    const { jobs } = response.data;
     const paginateArguments = {
       jobsList: jobs,
       pathBase: `${API_PUBLIC_PATH}/remotive/`,
     };
 
     await emptyDirectory(REMOTIVE_JOBS_LIST_PATH);
-
-    Promise.allSettled([
+    await Promise.allSettled([
       saveMetadata(JOBS_API_URL),
       categorizeJobsByLocation(jobs),
       paginateJobsList(paginateArguments),
