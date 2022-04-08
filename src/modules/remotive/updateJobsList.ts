@@ -3,14 +3,14 @@ import { slugify } from '@shared/utils';
 import { uploadChanges } from '@shared/api';
 import { emptyDirectory, writeJSON } from '@shared/file';
 import { API_URL, API_PUBLIC_PATH, JOBS_API_URL } from '@shared/constants';
-import type { Job, JobsListRespose, CategorizableJobAtrrs } from '@types';
+import type { Job, JobsListResponse, CategorizableJobAtrrs } from '@types';
 
 async function updateJobsList(moduleName: string): Promise<void> {
   const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive`;
 
   try {
     const response = await fetch(JOBS_API_URL);
-    const { jobs }: JobsListRespose = (await response.json()) as JobsListRespose;
+    const { jobs }: JobsListResponse = (await response.json()) as JobsListResponse;
     const paginateArguments = {
       jobsList: jobs,
       pathBase: `${API_PUBLIC_PATH}/remotive/`,

@@ -29,7 +29,7 @@ export interface Job {
   company_logo_url: string;
 }
 
-export interface JobsListRespose {
+export interface JobsListResponse {
   '0-legal-notice': string;
   'job-count': number;
   jobs: Job[];
