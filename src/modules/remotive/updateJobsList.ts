@@ -10,7 +10,7 @@ async function updateJobsList(moduleName: string): Promise<void> {
 
   try {
     const response = await fetch(JOBS_API_URL);
-    const { jobs }: JobsListRespose = await response.json() as JobsListRespose;
+    const { jobs }: JobsListRespose = (await response.json()) as JobsListRespose;
     const paginateArguments = {
       jobsList: jobs,
       pathBase: `${API_PUBLIC_PATH}/remotive/`,
@@ -18,10 +18,13 @@ async function updateJobsList(moduleName: string): Promise<void> {
 
     await emptyDirectory(REMOTIVE_JOBS_LIST_PATH);
 
-    await paginateJobsList(paginateArguments);
-    await categorizeJobsListBy('category', jobs);
-    await categorizeJobsListBy('job_type', jobs);
-    await categorizeJobsByLocation(jobs);
+    Promise.allSettled([
+      saveMetadata(JOBS_API_URL),
+      categorizeJobsByLocation(jobs),
+      paginateJobsList(paginateArguments),
+      categorizeJobsListBy('category', jobs),
+      categorizeJobsListBy('job_type', jobs),
+    ]);
 
     uploadChanges(moduleName);
   } catch (error) {
@@ -113,6 +116,14 @@ async function categorizeJobsByLocation(jobsList: Job[]): Promise<void> {
 
   await writeJSON(`${API_PUBLIC_PATH}/remotive/required-location/index.json`, JSON.stringify(pageContent));
   console.log(`[sac] required location category completed`);
+}
+
+async function saveMetadata(remotive_api: string): Promise<void> {
+  const last_update = new Date().getTime();
+  const metadateObject = { last_update, remotive_api };
+
+  await writeJSON(`${API_PUBLIC_PATH}/remotive/index.json`, JSON.stringify(metadateObject));
+  console.log(`[sac] metadata saved`);
 }
 
 export default updateJobsList;
