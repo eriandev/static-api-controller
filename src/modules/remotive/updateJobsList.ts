@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { slugify } from '@shared/utils';
-import { uploadChanges } from '@shared/api';
-import { emptyDirectory, writeJSON } from '@shared/file';
-import { API_URL, API_PUBLIC_PATH, JOBS_API_URL } from '@shared/constants';
-import type { Job, JobsListResponse, CategorizableJobAtrrs } from '@types';
+import { slugify } from '@/shared/utils';
+import { uploadChanges } from '@/shared/api';
+import { emptyDirectory, writeJSON } from '@/shared/file';
+import { API_URL, API_PUBLIC_PATH, JOBS_API_URL } from '@/shared/constants';
+import type { Job, JobsListResponse, CategorizableJobAtrrs } from '@/interfaces';
 
 async function updateJobsList(moduleName: string): Promise<void> {
   const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive`;

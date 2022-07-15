@@ -1,9 +1,9 @@
 import { Octokit } from '@octokit/rest';
-import { writeJSON } from '@shared/file';
+import { writeJSON } from '@/shared/file';
 // import { uploadChanges } from '@shared/api';
-import { getBrowserAndNewPage } from '@shared/utils';
-import { API_PUBLIC_PATH } from '@shared/constants';
-import type { CleanRepo, DirtyRepo } from '@types';
+import { getBrowserAndNewPage } from '@/shared/utils';
+import { API_PUBLIC_PATH } from '@/shared/constants';
+import type { CleanRepo, DirtyRepo } from '@/interfaces';
 
 const octokit = new Octokit();
 const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`;

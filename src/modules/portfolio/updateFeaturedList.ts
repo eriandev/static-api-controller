@@ -1,7 +1,7 @@
-import { writeJSON, readJSON } from '@shared/file';
-import { getBrowserAndNewPage } from '@shared/utils';
-import { API_PUBLIC_PATH } from '@shared/constants';
-import type { CleanRepo } from '@types';
+import { writeJSON, readJSON } from '@/shared/file';
+import { getBrowserAndNewPage } from '@/shared/utils';
+import { API_PUBLIC_PATH } from '@/shared/constants';
+import type { CleanRepo } from '@/interfaces';
 
 async function updateFeaturedList(moduleName: string, username: string): Promise<void> {
   const { browser, page } = await getBrowserAndNewPage();

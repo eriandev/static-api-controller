@@ -1,8 +1,8 @@
 import { prompt } from 'inquirer';
 import type { ListQuestionOptions } from 'inquirer';
 
-import { getDirectoriesNames } from '@shared/file';
-import { MODULES_PATH } from '@shared/constants';
+import { getDirectoriesNames } from '@/shared/file';
+import { MODULES_PATH } from '@/shared/constants';
 
 const modules = getDirectoriesNames(MODULES_PATH);
 
