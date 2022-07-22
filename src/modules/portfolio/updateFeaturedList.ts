@@ -3,7 +3,9 @@ import { getBrowserAndNewPage } from '@/shared/utils';
 import { API_PUBLIC_PATH } from '@/shared/constants';
 import type { CleanRepo } from '@/interfaces';
 
-async function updateFeaturedList(moduleName: string, username: string): Promise<void> {
+async function updateFeaturedList(moduleName: string, username?: string): Promise<void> {
+  if (!username) return;
+
   const { browser, page } = await getBrowserAndNewPage();
   await page.goto(`https://github.com/${username}`).catch((err: Error) => console.error(err));
 

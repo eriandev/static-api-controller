@@ -12,4 +12,6 @@ export const API_PATH = env.API_PATH;
 export const API_PUBLIC_PATH = `${API_PATH}/public`;
 export const MODULES_PATH = path.resolve(__dirname, '../modules');
 
+export const GITHUB_USER = env.GITHUB_USER;
+
 export const JOBS_API_URL = env.JOBS_API_URL ?? '';

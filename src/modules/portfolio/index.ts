@@ -2,6 +2,7 @@ import { prompt } from 'inquirer';
 import type { ListQuestionOptions } from 'inquirer';
 import updateFeaturedList from './updateFeaturedList';
 import updateReposList from './updateReposList';
+import { GITHUB_USER } from '@/shared/constants';
 
 const MODULE_NAME = 'portfolio';
 const OPTIONS_TEXT = ['Update repository list', 'Update featured list', 'Exit'];
@@ -19,12 +20,12 @@ async function showOptions(): Promise<void> {
   switch (answers['chosenFunction']) {
     case OPTIONS_TEXT[0]:
       console.log(OPTIONS_TEXT[0]);
-      updateReposList(MODULE_NAME, 'erianvc');
+      updateReposList(MODULE_NAME, GITHUB_USER);
       break;
 
     case OPTIONS_TEXT[1]:
       console.log(OPTIONS_TEXT[1]);
-      updateFeaturedList(MODULE_NAME, 'erianvc');
+      updateFeaturedList(MODULE_NAME, GITHUB_USER);
       break;
 
     case OPTIONS_TEXT[2]:

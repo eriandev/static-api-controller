@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
 import { writeJSON } from '@/shared/file';
-// import { uploadChanges } from '@shared/api';
+import { uploadChanges } from '@/shared/api';
 import { getBrowserAndNewPage } from '@/shared/utils';
 import { API_PUBLIC_PATH } from '@/shared/constants';
 import type { CleanRepo, DirtyRepo } from '@/interfaces';
@@ -8,14 +8,16 @@ import type { CleanRepo, DirtyRepo } from '@/interfaces';
 const octokit = new Octokit();
 const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`;
 
-async function updateReposList(moduleName: string, username: string): Promise<void> {
+async function updateReposList(moduleName: string, username?: string): Promise<void> {
+  if (!username) return;
+
   const { data } = await octokit.rest.repos.listForUser({ username });
 
   const cleanRepos = getCleanReposList(data);
   const cleanReposWithTopics = await getReposWithTopics(cleanRepos);
 
   await writeJSON(REPOS_PATH, JSON.stringify(cleanReposWithTopics));
-  // uploadChanges(moduleName);
+  uploadChanges(moduleName);
 }
 
 function getCleanReposList(data: DirtyRepo[]): CleanRepo[] {
