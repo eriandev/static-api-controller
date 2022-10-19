@@ -1,22 +1,23 @@
-import { prompt } from 'inquirer';
-import type { ListQuestionOptions } from 'inquirer';
+import { prompt } from 'inquirer'
+import type { ListQuestionOptions } from 'inquirer'
 
-import { getDirectoriesNames } from '@/shared/file';
-import { MODULES_PATH } from '@/shared/constants';
+import { getDirectoriesNames } from '@/shared/file'
+import { MODULES_PATH } from '@/shared/constants'
 
-const modules = getDirectoriesNames(MODULES_PATH);
+const modules = getDirectoriesNames(MODULES_PATH)
 
-(async (): Promise<void> => {
+void (async (): Promise<void> => {
   const questions: ListQuestionOptions = {
     type: 'list',
     name: 'chosenModule',
     message: 'Module to use:',
-    choices: modules,
-  };
+    choices: modules
+  }
 
-  const answers = await prompt([questions]);
+  const answers = await prompt([questions])
 
-  const { default: chosenModule } = await import(`./modules/${answers.chosenModule}`);
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  const { default: chosenModule } = await import(`./modules/${answers.chosenModule}`)
 
-  chosenModule();
-})();
+  chosenModule()
+})()

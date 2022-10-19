@@ -1,26 +1,27 @@
-import { Octokit } from '@octokit/rest';
-import { writeJSON } from '@/shared/file';
-import { uploadChanges } from '@/shared/api';
-import { getBrowserAndNewPage } from '@/shared/utils';
-import { API_PUBLIC_PATH } from '@/shared/constants';
-import type { CleanRepo, DirtyRepo } from '@/interfaces';
+import { Octokit } from '@octokit/rest'
 
-const octokit = new Octokit();
-const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`;
+import { writeJSON } from '@/shared/file'
+import { uploadChanges } from '@/shared/api'
+import { getBrowserAndNewPage } from '@/shared/utils'
+import { API_PUBLIC_PATH } from '@/shared/constants'
+import type { CleanRepo, DirtyRepo } from '@/interfaces'
 
-async function updateReposList(moduleName: string, username?: string): Promise<void> {
-  if (!username) return;
+const octokit = new Octokit()
+const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`
 
-  const { data } = await octokit.rest.repos.listForUser({ username });
+async function updateReposList (moduleName: string, username?: string): Promise<void> {
+  if (typeof username !== 'string') return
 
-  const cleanRepos = getCleanReposList(data);
-  const cleanReposWithTopics = await getReposWithTopics(cleanRepos);
+  const { data } = await octokit.rest.repos.listForUser({ username })
 
-  await writeJSON(REPOS_PATH, JSON.stringify(cleanReposWithTopics));
-  uploadChanges(moduleName);
+  const cleanRepos = getCleanReposList(data)
+  const cleanReposWithTopics = await getReposWithTopics(cleanRepos)
+
+  await writeJSON(REPOS_PATH, JSON.stringify(cleanReposWithTopics))
+  uploadChanges(moduleName)
 }
 
-function getCleanReposList(data: DirtyRepo[]): CleanRepo[] {
+function getCleanReposList (data: DirtyRepo[]): CleanRepo[] {
   return data
     .map((repo) => ({
       id: repo.id,
@@ -37,29 +38,29 @@ function getCleanReposList(data: DirtyRepo[]): CleanRepo[] {
       demo: repo.homepage,
       archived: repo.archived,
       disabled: repo.disabled,
-      topics: [],
+      topics: []
     }))
-    .filter((repo) => !repo.disabled && !repo.archived && !repo.fork);
+    .filter((repo) => !(repo.disabled ?? false) && !(repo.archived ?? false) && !repo.fork) // !repo.disabled && !repo.archived && !repo.fork
 }
 
-async function getReposWithTopics(repos: CleanRepo[]): Promise<CleanRepo[]> {
-  const { browser, page } = await getBrowserAndNewPage();
+async function getReposWithTopics (repos: CleanRepo[]): Promise<CleanRepo[]> {
+  const { browser, page } = await getBrowserAndNewPage()
 
   for await (const repo of repos) {
-    await page.goto(repo.url.toString()).catch((err: Error) => console.error(err));
+    await page.goto(repo.url.toString()).catch((err: Error) => console.error(err))
 
     const topics = await page.$$eval('[data-ga-click="Topic, repository page"]', (repoTopics) =>
       repoTopics.map((repoTopic) => {
-        const anchor = repoTopic as HTMLElement;
-        return anchor.innerText.trim();
-      }),
-    );
+        const anchor = repoTopic as HTMLElement
+        return anchor.innerText.trim()
+      })
+    )
 
-    repo.topics = topics;
+    repo.topics = topics
   }
 
-  await browser.close();
-  return repos;
+  await browser.close()
+  return repos
 }
 
-export default updateReposList;
+export default updateReposList

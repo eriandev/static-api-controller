@@ -1,37 +1,38 @@
-import { prompt } from 'inquirer';
-import type { ListQuestionOptions } from 'inquirer';
-import updateFeaturedList from './updateFeaturedList';
-import updateReposList from './updateReposList';
-import { GITHUB_USER } from '@/shared/constants';
+import { prompt } from 'inquirer'
+import type { ListQuestionOptions } from 'inquirer'
 
-const MODULE_NAME = 'portfolio';
-const OPTIONS_TEXT = ['Update repository list', 'Update featured list', 'Exit'];
+import updateFeaturedList from './updateFeaturedList'
+import updateReposList from './updateReposList'
+import { GITHUB_USER } from '@/shared/constants'
 
-async function showOptions(): Promise<void> {
+const MODULE_NAME = 'portfolio'
+const OPTIONS_TEXT = ['Update repository list', 'Update featured list', 'Exit']
+
+async function showOptions (): Promise<void> {
   const questions: ListQuestionOptions = {
     type: 'list',
     name: 'chosenFunction',
     message: 'What do you want to do?',
-    choices: OPTIONS_TEXT,
-  };
+    choices: OPTIONS_TEXT
+  }
 
-  const answers = await prompt([questions]);
+  const answers = await prompt([questions])
 
-  switch (answers['chosenFunction']) {
+  switch (answers.chosenFunction) {
     case OPTIONS_TEXT[0]:
-      console.log(OPTIONS_TEXT[0]);
-      updateReposList(MODULE_NAME, GITHUB_USER);
-      break;
+      console.info(OPTIONS_TEXT[0])
+      await updateReposList(MODULE_NAME, GITHUB_USER)
+      break
 
     case OPTIONS_TEXT[1]:
-      console.log(OPTIONS_TEXT[1]);
-      updateFeaturedList(MODULE_NAME, GITHUB_USER);
-      break;
+      console.info(OPTIONS_TEXT[1])
+      await updateFeaturedList(MODULE_NAME, GITHUB_USER)
+      break
 
     case OPTIONS_TEXT[2]:
-      console.log('Session ended');
-      break;
+      console.info('Session ended')
+      break
   }
 }
 
-export default showOptions;
+export default showOptions

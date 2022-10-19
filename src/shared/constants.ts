@@ -1,17 +1,17 @@
-import path from 'node:path';
-import dotenv from 'dotenv';
+import path from 'node:path'
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
-const { env } = process;
+const { env } = process
 
-export { version } from '../../package.json';
+export { version } from '../../package.json'
 
-export const API_URL = env.API_URL;
-export const API_PATH = env.API_PATH;
-export const API_PUBLIC_PATH = `${API_PATH}/public`;
-export const MODULES_PATH = path.resolve(__dirname, '../modules');
+export const API_URL = env.API_URL ?? ''
+export const API_PATH = env.API_PATH ?? ''
+export const API_PUBLIC_PATH = `${API_PATH}/public`
+export const MODULES_PATH = path.resolve(__dirname, '../modules')
 
-export const GITHUB_USER = env.GITHUB_USER;
+export const GITHUB_USER = env.GITHUB_USER
 
-export const JOBS_API_URL = env.JOBS_API_URL ?? '';
+export const JOBS_API_URL = env.JOBS_API_URL ?? ''

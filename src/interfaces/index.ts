@@ -1,2 +1,2 @@
-export * from './portfolio';
-export * from './remotive';
+export * from './portfolio'
+export * from './remotive'

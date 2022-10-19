@@ -1,30 +1,31 @@
-import { prompt } from 'inquirer';
-import type { ListQuestionOptions } from 'inquirer';
-import updateJobsList from './updateJobsList';
+import { prompt } from 'inquirer'
+import type { ListQuestionOptions } from 'inquirer'
 
-const MODULE_NAME = 'remotive';
-const OPTIONS_TEXT = ['Update jobs list', 'Exit'];
+import updateJobsList from './updateJobsList'
 
-async function showOptions(): Promise<void> {
+const MODULE_NAME = 'remotive'
+const OPTIONS_TEXT = ['Update jobs list', 'Exit']
+
+async function showOptions (): Promise<void> {
   const questions: ListQuestionOptions = {
     type: 'list',
     name: 'chosenFunction',
     message: 'What do you want to do?',
-    choices: OPTIONS_TEXT,
-  };
+    choices: OPTIONS_TEXT
+  }
 
-  const answers = await prompt([questions]);
+  const answers = await prompt([questions])
 
-  switch (answers['chosenFunction']) {
+  switch (answers.chosenFunction) {
     case OPTIONS_TEXT[0]:
-      console.log(OPTIONS_TEXT[0]);
-      updateJobsList(MODULE_NAME);
-      break;
+      console.info(OPTIONS_TEXT[0])
+      await updateJobsList(MODULE_NAME)
+      break
 
     case OPTIONS_TEXT[1]:
-      console.log('Session ended');
-      break;
+      console.info('Session ended')
+      break
   }
 }
 
-export default showOptions;
+export default showOptions
