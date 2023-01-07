@@ -1,23 +1,13 @@
-import { prompt } from 'inquirer'
-import type { ListQuestionOptions } from 'inquirer'
+import { Select } from 'cliffy';
+import { MODULES, MODULES_NAMES } from '@/shared/constants.ts';
 
-import { getDirectoriesNames } from '@/shared/file'
-import { MODULES_PATH } from '@/shared/constants'
-
-const modules = getDirectoriesNames(MODULES_PATH)
-
-void (async (): Promise<void> => {
-  const questions: ListQuestionOptions = {
-    type: 'list',
-    name: 'chosenModule',
+export async function main() {
+  const answer = await Select.prompt({
     message: 'Module to use:',
-    choices: modules
-  }
+    options: MODULES_NAMES,
+  });
 
-  const answers = await prompt([questions])
+  MODULES[answer.toLowerCase() as keyof typeof MODULES]();
+}
 
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  const { default: chosenModule } = await import(`./modules/${answers.chosenModule}`)
-
-  chosenModule()
-})()
+main();

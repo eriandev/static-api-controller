@@ -1,24 +1,20 @@
-import { Octokit } from '@octokit/rest'
+import { Octokit } from '@octokit';
+import { writeJSON } from '@/shared/file.ts';
+import { uploadChanges } from '@/shared/api.ts';
+import { API_PUBLIC_PATH } from '@/shared/constants.ts';
+import { getBrowserAndNewPage } from '@/shared/utils.ts';
+import type { CleanRepo, DirtyRepo } from '@/modules/portfolio/types.ts';
 
-import { writeJSON } from '@/shared/file'
-import { uploadChanges } from '@/shared/api'
-import { getBrowserAndNewPage } from '@/shared/utils'
-import { API_PUBLIC_PATH } from '@/shared/constants'
-import type { CleanRepo, DirtyRepo } from '@/interfaces'
+export async function main(moduleName: string, username: string): Promise<void> {
+  const octokit = new Octokit();
+  const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`;
+  const { data } = await octokit.rest.repos.listForUser({ username });
 
-const octokit = new Octokit()
-const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`
+  const cleanRepos = getCleanReposList(data as DirtyRepo[]);
+  const cleanReposWithTopics = await getReposWithTopics(cleanRepos);
 
-async function updateReposList (moduleName: string, username?: string): Promise<void> {
-  if (typeof username !== 'string') return
-
-  const { data } = await octokit.rest.repos.listForUser({ username })
-
-  const cleanRepos = getCleanReposList(data)
-  const cleanReposWithTopics = await getReposWithTopics(cleanRepos)
-
-  await writeJSON(REPOS_PATH, JSON.stringify(cleanReposWithTopics))
-  uploadChanges(moduleName)
+  await writeJSON(REPOS_PATH, JSON.stringify(cleanReposWithTopics));
+  uploadChanges(moduleName);
 }
 
 function getCleanReposList (data: DirtyRepo[]): CleanRepo[] {
@@ -51,16 +47,14 @@ async function getReposWithTopics (repos: CleanRepo[]): Promise<CleanRepo[]> {
 
     const topics = await page.$$eval('[data-ga-click="Topic, repository page"]', (repoTopics) =>
       repoTopics.map((repoTopic) => {
-        const anchor = repoTopic as HTMLElement
-        return anchor.innerText.trim()
-      })
-    )
+        const anchor = repoTopic as HTMLElement;
+        return anchor.innerText.trim();
+      }));
 
     repo.topics = topics
   }
 
-  await browser.close()
-  return repos
-}
+  await browser.close();
 
-export default updateReposList
+  return repos;
+}
