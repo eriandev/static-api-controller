@@ -2,7 +2,6 @@
   "imports": {
     "@/": "./src/",
     "@octokit": "npm:@octokit/rest@18.12.0",
-    "@types/inquirer": "npm:@types/inquirer@8.2.1",
     "$deno/": "https://deno.land/std@0.165.0/",
     "ask": "https://deno.land/x/ask@1.0.6/mod.ts",
     "cliffy": "https://deno.land/x/cliffy@v0.25.7/prompt/mod.ts",
