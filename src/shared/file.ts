@@ -6,7 +6,7 @@ export async function writeJSON(filePath: string, data: string): Promise<void> {
   const DIRECTORY_PATH = filePath
     .split('/', filePath.split('/').length - 1)
     .join('/')
-    .toString()
+    .toString();
 
   try {
     await Deno.mkdir(DIRECTORY_PATH, { recursive: true });
@@ -16,7 +16,7 @@ export async function writeJSON(filePath: string, data: string): Promise<void> {
 
     await Deno.writeFile(filePath, uint8ArrayData);
   } catch (error) {
-    console.error(`[sac:error] ${error as string}`)
+    console.error(`[sac:error] ${error as string}`);
   }
 }
 
@@ -27,6 +27,6 @@ export async function readJSON<T = string>(filePath: string): Promise<T | null> 
 
     return JSON.parse(decoder.decode(data));
   } catch (error) {
-    return null
+    return null;
   }
 }

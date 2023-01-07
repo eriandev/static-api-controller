@@ -17,7 +17,7 @@ export async function main(moduleName: string, username: string): Promise<void> 
   uploadChanges(moduleName);
 }
 
-function getCleanReposList (data: DirtyRepo[]): CleanRepo[] {
+function getCleanReposList(data: DirtyRepo[]): CleanRepo[] {
   return data
     .map((repo) => ({
       id: repo.id,
@@ -34,16 +34,16 @@ function getCleanReposList (data: DirtyRepo[]): CleanRepo[] {
       demo: repo.homepage,
       archived: repo.archived,
       disabled: repo.disabled,
-      topics: []
+      topics: [],
     }))
-    .filter((repo) => !(repo.disabled ?? false) && !(repo.archived ?? false) && !repo.fork) // !repo.disabled && !repo.archived && !repo.fork
+    .filter((repo) => !(repo.disabled ?? false) && !(repo.archived ?? false) && !repo.fork); // !repo.disabled && !repo.archived && !repo.fork
 }
 
-async function getReposWithTopics (repos: CleanRepo[]): Promise<CleanRepo[]> {
-  const { browser, page } = await getBrowserAndNewPage()
+async function getReposWithTopics(repos: CleanRepo[]): Promise<CleanRepo[]> {
+  const { browser, page } = await getBrowserAndNewPage();
 
   for await (const repo of repos) {
-    await page.goto(repo.url.toString()).catch((err: Error) => console.error(err))
+    await page.goto(repo.url.toString()).catch((err: Error) => console.error(err));
 
     const topics = await page.$$eval('[data-ga-click="Topic, repository page"]', (repoTopics) =>
       repoTopics.map((repoTopic) => {
@@ -51,7 +51,7 @@ async function getReposWithTopics (repos: CleanRepo[]): Promise<CleanRepo[]> {
         return anchor.innerText.trim();
       }));
 
-    repo.topics = topics
+    repo.topics = topics;
   }
 
   await browser.close();
