@@ -1,5 +1,5 @@
 import { slugify } from '@/shared/utils.ts';
-import { uploadChanges } from '@/shared/api.ts';
+import { uploadChanges } from '@/shared/repo.ts';
 import { emptyDirectory, writeJSON } from '@/shared/file.ts';
 import { API_PUBLIC_PATH, API_URL, JOBS_API_URL } from '@/shared/constants.ts';
 import type { CategorizableJobAtrrs, Job, JobsListResponse } from './types.ts';

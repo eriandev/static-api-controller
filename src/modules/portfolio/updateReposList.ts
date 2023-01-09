@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit';
 import { writeJSON } from '@/shared/file.ts';
-import { uploadChanges } from '@/shared/api.ts';
+import { uploadChanges } from '@/shared/repo.ts';
 import { API_PUBLIC_PATH } from '@/shared/constants.ts';
 import { getBrowserAndNewPage } from '@/shared/utils.ts';
 import type { CleanRepo, DirtyRepo } from '@/modules/portfolio/types.ts';
