@@ -1,5 +1,5 @@
 import { main as remotive } from '@/modules/remotive/main.ts';
-import { main as portfolio } from '@/modules/portfolio/main.ts';
+import { main as github } from '@/modules/github/main.ts';
 import denoJson from '../../deno.json' assert { type: 'json' };
 import '$deno/dotenv/load.ts';
 
@@ -9,8 +9,8 @@ export const API_PATH = Deno.env.get('API_PATH');
 export const API_PUBLIC_PATH = `${Deno.env.get('API_PATH')}/public`;
 export const GITHUB_USER = Deno.env.get('GITHUB_USER') ?? 'unknown';
 export const JOBS_API_URL = Deno.env.get('JOBS_API_URL') ?? '';
-export const MODULES_NAMES = ['Portfolio', 'Remotive'];
+export const MODULES_NAMES = ['Github', 'Remotive'];
 export const MODULES = {
-  portfolio,
+  github,
   remotive,
 };

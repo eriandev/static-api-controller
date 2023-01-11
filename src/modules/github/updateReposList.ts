@@ -2,7 +2,7 @@ import { Octokit } from '@octokit';
 import { writeJSON } from '@/shared/file.ts';
 import { uploadChanges } from '@/shared/repo.ts';
 import { API_PUBLIC_PATH } from '@/shared/constants.ts';
-import type { CleanRepo, DirtyRepo } from '@/modules/portfolio/types.ts';
+import type { CleanRepo, DirtyRepo } from '@/modules/github/types.ts';
 
 export async function main(moduleName: string, username: string): Promise<void> {
   const REPOS_PATH = `${API_PUBLIC_PATH}/github/repos/index.json`;

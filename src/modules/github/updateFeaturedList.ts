@@ -1,7 +1,7 @@
 import { useScraper } from '@/services/scraping.ts';
 import { readJSON, writeJSON } from '@/shared/file.ts';
 import { API_PUBLIC_PATH } from '@/shared/constants.ts';
-import type { CleanRepo } from '@/modules/portfolio/types.ts';
+import type { CleanRepo } from '@/modules/github/types.ts';
 
 export async function main(moduleName: string, username: string): Promise<void> {
   const featuredRepoNameList = await getFeaturedRepoNameList(username);

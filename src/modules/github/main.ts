@@ -1,10 +1,10 @@
 import { Select } from 'cliffy';
-import { main as updateFeaturedList } from '@/modules/portfolio/updateFeaturedList.ts';
-import { main as updateReposList } from '@/modules/portfolio/updateReposList.ts';
+import { main as updateFeaturedList } from '@/modules/github/updateFeaturedList.ts';
+import { main as updateReposList } from '@/modules/github/updateReposList.ts';
 import { GITHUB_USER } from '@/shared/constants.ts';
 
 export async function main(): Promise<void> {
-  const MODULE_NAME = 'Portfolio';
+  const MODULE_NAME = 'Github';
   const OPTIONS_TEXT = ['Update repository list', 'Update featured list', 'Exit'];
 
   const answer: string = await Select.prompt({
