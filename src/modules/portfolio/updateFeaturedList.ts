@@ -1,33 +1,26 @@
+import { useScraper } from '@/services/scraping.ts';
 import { readJSON, writeJSON } from '@/shared/file.ts';
 import { API_PUBLIC_PATH } from '@/shared/constants.ts';
-import { getBrowserAndNewPage } from '@/shared/utils.ts';
 import type { CleanRepo } from '@/modules/portfolio/types.ts';
 
 export async function main(moduleName: string, username: string): Promise<void> {
-  const { browser, page } = await getBrowserAndNewPage();
-  await page.goto(`https://github.com/${username}`).catch((err: Error) => console.error(err));
+  const featuredRepoNameList = await getFeaturedRepoNameList(username);
+  const featuredRepoList = await getFilteredReposByName(featuredRepoNameList);
+  const FEATURED_REPOS_PATH = `${API_PUBLIC_PATH}/github/repos/featured/index.json`;
 
-  await page.waitForFunction(() => {
-    const pinnedRepos = document.querySelectorAll('ol');
-    return pinnedRepos.length;
-  });
-
-  const featuredTitles = await page.$$eval('ol.js-pinned-items-reorder-list li', (featuredRepos) => {
-    const toText = (element: HTMLElement | null): string => (element != null ? element.innerText.trim() : '');
-    return featuredRepos.map((featuredRepo) => toText(featuredRepo.querySelector('a.text-bold')));
-  });
-
-  await browser.close();
-
-  const featuredRepos = await getFilteredReposByName(featuredTitles);
-  const FEATURED_REPOS_PATH = `${API_PUBLIC_PATH}/featured/index.json`;
-
-  await writeJSON(FEATURED_REPOS_PATH, JSON.stringify(featuredRepos));
+  await writeJSON(FEATURED_REPOS_PATH, JSON.stringify(featuredRepoList));
 }
 
-async function getFilteredReposByName(names: string[]): Promise<CleanRepo[] | null> {
-  const REPOS_PATH = `${API_PUBLIC_PATH}/repos/index.json`;
+async function getFeaturedRepoNameList(username: string) {
+  const { $$ } = await useScraper(`https://github.com/${username}`);
+  const scrapedNames = $$('.pinned-item-list-item-content .repo');
+
+  return scrapedNames ? Array.from(scrapedNames).map((repoName) => repoName.textContent.trim()) : [];
+}
+
+async function getFilteredReposByName(names: string[]): Promise<CleanRepo[]> {
+  const REPOS_PATH = `${API_PUBLIC_PATH}/github/repos/index.json`;
   const repos = await readJSON<CleanRepo[]>(REPOS_PATH);
 
-  return repos != null ? repos.filter((repo) => names.includes(repo.name)) : null;
+  return repos ? repos.filter((repo) => names.includes(repo.name)) : [];
 }
