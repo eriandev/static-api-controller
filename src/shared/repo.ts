@@ -3,7 +3,7 @@ import { getTimeStamp } from '@/shared/utils.ts';
 
 export async function uploadChanges(moduleName: string): Promise<void> {
   if (!await addChanges()) return;
-  if (!await commitChanges(`Update ${moduleName} at ${getTimeStamp()}`)) return;
+  if (!await commitChanges(`Update \`${moduleName}\` at ${getTimeStamp()}`)) return;
   if (!await pushChanges()) return;
 }
 
@@ -37,7 +37,7 @@ export async function commitChanges(message: string) {
 
   const process = Deno.run({
     cwd: API_PATH,
-    cmd: ['git', 'commit', '-m', `"${message}"`],
+    cmd: ['git', 'commit', '-m', `${message}`],
     stdin: 'null',
     stdout: 'null',
   });
