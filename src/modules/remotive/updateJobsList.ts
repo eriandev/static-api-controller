@@ -31,11 +31,12 @@ export async function main(moduleName: string): Promise<void> {
 }
 
 async function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: string }): Promise<void> {
+  const JOBS_PER_PAGE = 20;
   const JOB_COUNT = jobsList.length;
-  const TOTAL_PAGES = Math.ceil(jobsList.length / 10);
+  const TOTAL_PAGES = Math.ceil(jobsList.length / JOBS_PER_PAGE);
 
   let initBlock = 0;
-  let endBlock = 10;
+  let endBlock = JOBS_PER_PAGE;
 
   for (let index = 1; index <= TOTAL_PAGES; index++) {
     const prevPage = { prev: `${API_URL}/remotive/${index - 1}` };
@@ -43,7 +44,7 @@ async function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathB
     const pageContent = {
       job_count: JOB_COUNT,
       total_pages: TOTAL_PAGES,
-      jobs_per_page: 10,
+      jobs_per_page: JOBS_PER_PAGE,
       ...(index > 1 && prevPage),
       ...(index < TOTAL_PAGES && nextPage),
       results: jobsList.slice(initBlock, endBlock),
@@ -51,8 +52,8 @@ async function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathB
 
     await writeJSON(`${pathBase + index.toString()}/index.json`, JSON.stringify(pageContent));
 
-    initBlock += 10;
-    endBlock += 10;
+    initBlock += JOBS_PER_PAGE;
+    endBlock += JOBS_PER_PAGE;
   }
 }
 
