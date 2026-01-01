@@ -10,15 +10,15 @@ export async function uploadChanges(moduleName: string): Promise<void> {
 export async function addChanges() {
   console.info('[sac] Adding changes...');
 
-  const process = Deno.run({
+  const command = new Deno.Command('git', {
     cwd: API_PATH,
-    cmd: ['git', 'add', '.'],
+    args: ['add', '.'],
     stdin: 'null',
     stdout: 'null',
   });
 
-  const processStatus = await process.status();
-  if (!processStatus.success) {
+  const { success } = await command.output();
+  if (!success) {
     console.error('[sac] Failed to add changes');
     return false;
   }
@@ -35,17 +35,15 @@ export async function commitChanges(message: string) {
     return false;
   }
 
-  const process = Deno.run({
+  const command = new Deno.Command('git', {
     cwd: API_PATH,
-    cmd: ['git', 'commit', '-m', `${message}`],
+    args: ['commit', '-m', `${message}`],
     stdin: 'null',
     stdout: 'null',
   });
 
-  const processStatus = await process.status();
-  if (!processStatus.success) {
-    return false;
-  }
+  const { success } = await command.output();
+  if (!success) return false;
 
   console.info('[sac] Changes saved!');
   return true;
@@ -54,16 +52,16 @@ export async function commitChanges(message: string) {
 export async function pushChanges(branch = 'main') {
   console.info('[sac]  Uploading the changes...');
 
-  const process = Deno.run({
+  const command = new Deno.Command('git', {
     cwd: API_PATH,
-    cmd: ['git', 'push', '-u', 'origin', branch],
+    args: ['push', '-u', 'origin', branch],
     stdin: 'null',
     stdout: 'null',
     stderr: 'null',
   });
 
-  const processStatus = await process.status();
-  if (!processStatus.success) {
+  const { success } = await command.output();
+  if (!success) {
     console.error('[sac] Failed to add changes');
     return false;
   }
