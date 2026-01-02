@@ -2,9 +2,8 @@
   "version": "1.0.0",
 
   "tasks": {
-    "start": "deno run --allow-run --allow-env scripts/start.ts",
-    "reload": "deno run --allow-run --allow-env scripts/reload.ts",
-    "build": "deno bundle src/main.ts build/bundle.js"
+    "start": "deno run --allow-run scripts/start.ts",
+    "reload": "deno cache --reload --frozen=true src/main.ts"
   },
 
   "compilerOptions": {
