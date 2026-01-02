@@ -6,13 +6,13 @@ async function main() {
     '--allow-write',
     '--allow-run',
     '--allow-net=github.com,api.github.com,remotive.io',
-  ];
+  ]
   const command = new Deno.Command('deno', {
     args: ['run', ...PERMISSIONS, 'src/main.ts'],
     stdin: 'inherit',
     stdout: 'inherit',
-  });
-  await command.output();
+  })
+  await command.output()
 }
 
-main();
+main()

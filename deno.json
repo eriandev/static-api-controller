@@ -7,8 +7,6 @@
     "build": "deno bundle src/main.ts build/bundle.js"
   },
 
-  "importMap": "imports.json",
-
   "compilerOptions": {
     "strict": true,
     "lib": [
@@ -19,9 +17,7 @@
   },
 
   "lint": {
-    "files": {
-      "include": ["src/", "scripts"]
-    },
+    "include": ["src/", "scripts"],
     "rules": {
       "tags": ["recommended"],
       "exclude": ["no-unused-vars"]
@@ -29,15 +25,20 @@
   },
 
   "fmt": {
-    "files": {
-      "include": ["src/", "scripts"]
-    },
-    "options": {
-      "useTabs": false,
-      "lineWidth": 180,
-      "indentWidth": 2,
-      "singleQuote": true,
-      "proseWrap": "preserve"
-    }
+    "useTabs": false,
+    "lineWidth": 120,
+    "indentWidth": 2,
+    "semiColons": false,
+    "singleQuote": true,
+    "proseWrap": "preserve",
+    "include": ["src/", "scripts"]
+  },
+
+  "imports": {
+    "@/": "./src/",
+    "@octokit": "npm:@octokit/rest@18.12.0",
+    "$deno/": "https://deno.land/std@0.165.0/",
+    "cliffy": "https://deno.land/x/cliffy@v0.25.7/prompt/mod.ts",
+    "deno_dom": "https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts"
   }
 }

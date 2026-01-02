@@ -3,8 +3,8 @@ async function main() {
     args: ['cache', '--reload', '--lock=deno.lock', '--lock-write', 'src/main.ts'],
     stdin: 'inherit',
     stdout: 'inherit',
-  });
-  await command.output();
+  })
+  await command.output()
 }
 
-main();
+main()
