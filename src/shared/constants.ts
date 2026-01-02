@@ -1,7 +1,6 @@
 import { main as remotive } from '@/modules/remotive/main.ts'
 import { main as github } from '@/modules/github/main.ts'
 import denoJson from '../../deno.json' with { type: 'json' }
-import '$deno/dotenv/load.ts'
 
 export const VERSION = denoJson.version
 export const API_URL = Deno.env.get('API_URL')

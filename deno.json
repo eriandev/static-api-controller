@@ -35,9 +35,8 @@
 
   "imports": {
     "@/": "./src/",
+    "@b-fuze/deno-dom": "jsr:@b-fuze/deno-dom@0.1.56",
     "@octokit": "npm:@octokit/rest@18.12.0",
-    "$deno/": "https://deno.land/std@0.165.0/",
-    "cliffy": "https://deno.land/x/cliffy@v0.25.7/prompt/mod.ts",
-    "deno_dom": "https://deno.land/x/deno_dom@v0.1.36-alpha/deno-dom-wasm.ts"
+    "cliffy": "https://deno.land/x/cliffy@v0.25.7/prompt/mod.ts"
   }
 }

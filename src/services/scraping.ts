@@ -1,4 +1,4 @@
-import { DOMParser, type HTMLDocument } from 'deno_dom'
+import { DOMParser, type HTMLDocument } from '@b-fuze/deno-dom/wasm'
 
 export async function useScraper(url: string) {
   const domParser = new DOMParser()
