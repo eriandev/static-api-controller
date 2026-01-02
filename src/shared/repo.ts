@@ -2,9 +2,14 @@ import { API_PATH } from '@/shared/constants.ts'
 import { getTimeStamp } from '@/shared/utils.ts'
 
 export async function uploadChanges(moduleName: string) {
-  if (!await addChanges()) return
-  if (!await commitChanges(`Update \`${moduleName}\` at ${getTimeStamp()}`)) return
-  if (!await pushChanges()) return
+  try {
+    await addChanges()
+    await commitChanges(`Update \`${moduleName}\` at ${getTimeStamp()}`)
+    await pushChanges()
+  } catch (error) {
+    const { message } = error as Error
+    console.log(`[sac:error] ${message}`)
+  }
 }
 
 export async function addChanges() {
@@ -18,22 +23,15 @@ export async function addChanges() {
   })
 
   const { success } = await command.output()
-  if (!success) {
-    console.error('[sac] Failed to add changes')
-    return false
-  }
+  if (!success) throw new Error('Failed to add changes')
 
   console.info('[sac] Added changes!')
-  return true
 }
 
 export async function commitChanges(message: string) {
   console.info('[sac] Saving changes...')
 
-  if (!message) {
-    console.error('[sac] Failed to save changes: commit message not found')
-    return false
-  }
+  if (!message) throw new Error('Failed to save changes: commit message not found')
 
   const command = new Deno.Command('git', {
     cwd: API_PATH,
@@ -43,10 +41,9 @@ export async function commitChanges(message: string) {
   })
 
   const { success } = await command.output()
-  if (!success) return false
+  if (!success) throw new Error('Failed to commit changes')
 
   console.info('[sac] Changes saved!')
-  return true
 }
 
 export async function pushChanges(branch = 'main') {
@@ -61,11 +58,7 @@ export async function pushChanges(branch = 'main') {
   })
 
   const { success } = await command.output()
-  if (!success) {
-    console.error('[sac] Failed to add changes')
-    return false
-  }
+  if (!success) throw new Error('Failed to push changes')
 
   console.info('[sac] Changes uploaded!')
-  return true
 }

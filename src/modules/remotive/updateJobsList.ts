@@ -7,27 +7,23 @@ import type { CategorizableJobAtrrs, Job, JobsListResponse } from './types.ts'
 export async function main(moduleName: string) {
   const REMOTIVE_JOBS_LIST_PATH = `${API_PUBLIC_PATH}/remotive`
 
-  try {
-    const response = await fetch(JOBS_API_URL)
-    const { jobs }: JobsListResponse = await response.json()
-    const paginateArguments = {
-      jobsList: jobs,
-      pathBase: `${API_PUBLIC_PATH}/remotive/`,
-    }
-
-    await emptyDirectory(REMOTIVE_JOBS_LIST_PATH)
-    await Promise.allSettled([
-      saveMetadata(JOBS_API_URL),
-      categorizeJobsByLocation(jobs),
-      paginateJobsList(paginateArguments),
-      categorizeJobsListBy('category', jobs),
-      categorizeJobsListBy('job_type', jobs),
-    ])
-
-    uploadChanges(moduleName)
-  } catch (error) {
-    console.error(`[sac:error] ${error as string}`)
+  const response = await fetch(JOBS_API_URL)
+  const { jobs }: JobsListResponse = await response.json()
+  const paginateArguments = {
+    jobsList: jobs,
+    pathBase: `${API_PUBLIC_PATH}/remotive/`,
   }
+
+  await emptyDirectory(REMOTIVE_JOBS_LIST_PATH)
+  await Promise.allSettled([
+    saveMetadata(JOBS_API_URL),
+    categorizeJobsByLocation(jobs),
+    paginateJobsList(paginateArguments),
+    categorizeJobsListBy('category', jobs),
+    categorizeJobsListBy('job_type', jobs),
+  ])
+
+  uploadChanges(moduleName)
 }
 
 async function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: string }) {
