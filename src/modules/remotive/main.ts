@@ -1,5 +1,5 @@
 import { Select } from 'cliffy'
-import { main as updateJobsList } from '@/modules/remotive/updateJobsList.ts'
+import { main as updateJobsList } from '@/modules/remotive/update-jobs-list.ts'
 
 export async function main() {
   const MODULE_NAME = 'Remotive'

@@ -1,7 +1,7 @@
 import { Select } from 'cliffy'
-import { main as updateFeaturedList } from '@/modules/github/updateFeaturedList.ts'
-import { main as updateReposList } from '@/modules/github/updateReposList.ts'
 import { GITHUB_USER } from '@/shared/constants.ts'
+import { main as updateReposList } from '@/modules/github/update-repos-list.ts'
+import { main as updateFeaturedList } from '@/modules/github/update-featured-list.ts'
 
 export async function main() {
   const MODULE_NAME = 'Github'
