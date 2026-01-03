@@ -1,4 +1,4 @@
-import { Octokit } from '@octokit'
+import { Octokit } from '@octokit/rest'
 import { writeJSON } from '@/shared/file.ts'
 import { uploadChanges } from '@/shared/repo.ts'
 import { API_PUBLIC_PATH } from '@/shared/constants.ts'
@@ -6,37 +6,35 @@ import type { CleanRepo, DirtyRepo } from '@/modules/github/types.ts'
 
 export async function main(moduleName: string, username: string) {
   const REPOS_PATH = `${API_PUBLIC_PATH}/github/repos/index.json`
-  const dirtyRepos = await getAllRepos(username)
-  const cleanRepos = getCleanReposList(dirtyRepos)
+  const dirtyRepoList = await getAllRepos(username)
+  const repoList = normalizeRepoList(dirtyRepoList)
 
-  await writeJSON(REPOS_PATH, JSON.stringify(cleanRepos))
+  await writeJSON(REPOS_PATH, JSON.stringify(repoList))
   await uploadChanges(`Update \`${moduleName}\` repos list`)
 }
 
-async function getAllRepos(username: string) {
+async function getAllRepos(username: string): Promise<DirtyRepo[]> {
   const octokit = new Octokit()
-  const { data } = await octokit.rest.repos.listForUser({ username, type: 'owner', per_page: 150 })
-  return data as DirtyRepo[]
+  const { data } = await octokit.rest.repos.listForUser({ username, type: 'owner', per_page: 100 })
+  return data
 }
 
-function getCleanReposList(data: DirtyRepo[]): CleanRepo[] {
-  return data
+function normalizeRepoList(rawRepoList: DirtyRepo[]): CleanRepo[] {
+  return rawRepoList
+    .filter((repo) => !repo.disabled && !repo.archived)
     .map((repo) => ({
       id: repo.id,
       name: repo.name,
-      description: repo.description,
-      license: repo.license?.spdx_id,
-      language: repo.language,
-      fork: repo.fork,
       size: repo.size,
-      forks_count: repo.forks_count,
-      watchers_count: repo.watchers_count,
-      stargazers_count: repo.stargazers_count,
       url: repo.html_url,
-      demo: repo.homepage,
-      archived: repo.archived,
-      disabled: repo.disabled,
-      topics: [],
+      is_fork: repo.fork,
+      license: repo.license,
+      homepage: repo.homepage,
+      language: repo.language,
+      description: repo.description,
+      topics: repo.topics ?? [],
+      forks: repo.forks_count ?? 0,
+      watchers: repo.watchers_count ?? 0,
+      stargazers: repo.stargazers_count ?? 0,
     }))
-    .filter((repo) => !repo.disabled && !repo.archived)
 }
