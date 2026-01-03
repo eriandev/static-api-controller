@@ -1,10 +1,10 @@
 import { API_PATH } from '@/shared/constants.ts'
 import { getTimeStamp } from '@/shared/utils.ts'
 
-export async function uploadChanges(moduleName: string) {
+export async function uploadChanges(commitMessage: string) {
   try {
     await addChanges()
-    await commitChanges(`Update \`${moduleName}\` at ${getTimeStamp()}`)
+    await commitChanges(`${commitMessage} at ${getTimeStamp()}`)
     await pushChanges()
   } catch (error) {
     const { message } = error as Error

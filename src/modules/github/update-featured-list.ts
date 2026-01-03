@@ -1,3 +1,4 @@
+import { uploadChanges } from '@/shared/repo.ts'
 import { useScraper } from '@/services/scraping.ts'
 import { readJSON, writeJSON } from '@/shared/file.ts'
 import { API_PUBLIC_PATH } from '@/shared/constants.ts'
@@ -9,6 +10,7 @@ export async function main(moduleName: string, username: string) {
   const FEATURED_REPOS_PATH = `${API_PUBLIC_PATH}/github/repos/featured/index.json`
 
   await writeJSON(FEATURED_REPOS_PATH, JSON.stringify(featuredRepoList))
+  await uploadChanges(`Update \`${moduleName}\` featured repos list`)
 }
 
 async function getFeaturedRepoNameList(username: string) {

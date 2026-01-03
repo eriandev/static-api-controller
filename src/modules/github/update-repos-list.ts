@@ -10,7 +10,7 @@ export async function main(moduleName: string, username: string) {
   const cleanRepos = getCleanReposList(dirtyRepos)
 
   await writeJSON(REPOS_PATH, JSON.stringify(cleanRepos))
-  await uploadChanges(moduleName)
+  await uploadChanges(`Update \`${moduleName}\` repos list`)
 }
 
 async function getAllRepos(username: string) {

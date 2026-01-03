@@ -23,7 +23,7 @@ export async function main(moduleName: string) {
     categorizeJobsListBy('job_type', jobs),
   ])
 
-  uploadChanges(moduleName)
+  uploadChanges(`Update \`${moduleName}\` job list`)
 }
 
 async function paginateJobsList({ jobsList, pathBase }: { jobsList: Job[]; pathBase: string }) {
